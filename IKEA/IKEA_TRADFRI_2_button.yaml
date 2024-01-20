@@ -65,6 +65,7 @@ max_exceeded: silent
 
 variables:
   var_speed: !input speed
+  var_change: !input change
 
 trigger:
   - platform: event
@@ -113,7 +114,7 @@ action:
                   target:
                     entity_id: !input light
                   data:
-                    brightness_step_pct: !input change
+                    brightness_step_pct: "{{ (var_change * 1)|int }}"
                     transition: "{{ (var_speed / 1000)|float }}"
                 - delay:
                     milliseconds: !input speed
@@ -141,7 +142,7 @@ action:
                   target:
                     entity_id: !input light
                   data:
-                    brightness_step_pct: !input change
+                    brightness_step_pct: "{{ (var_change * -1)|int }}"
                     transition: "{{ (var_speed / 1000)|float }}"
                 - delay:
                     milliseconds: !input speed
