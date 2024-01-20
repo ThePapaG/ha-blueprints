@@ -54,7 +54,7 @@ blueprint:
       description: The step size in percentage.
       selector:
         number:
-          min: -100
+          min: 1
           max: 100
           step: 1
           mode: slider
@@ -114,7 +114,7 @@ action:
                   target:
                     entity_id: !input light
                   data:
-                    brightness_step_pct: "{{ (var_change * 1)|int }}"
+                    brightness_step_pct: "{{ var_change }}"
                     transition: "{{ (var_speed / 1000)|float }}"
                 - delay:
                     milliseconds: !input speed
