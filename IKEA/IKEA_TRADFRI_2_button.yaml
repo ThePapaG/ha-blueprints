@@ -82,7 +82,7 @@ action:
           - choose:
             - conditions:
               - condition: state
-                  entity_id: light.bedroom_light
+                  entity_id: !input light
                   state: "off"
                 sequence:
                   - service: light.turn_on
@@ -91,7 +91,7 @@ action:
                     data:
                       transition: "{{ (var_speed / 1000)|float }}"
               - condition: state
-                entity_id: light.bedroom_light
+                entity_id: !input light
                 state: "on"
               sequence:
                 - service: light.turn_on
