@@ -57,7 +57,7 @@ blueprint:
           min: -100
           max: 100
           step: 1
-          unit_of_measurement: %
+          unit_of_measurement: "%""
           mode: slider
       default: 10
 
