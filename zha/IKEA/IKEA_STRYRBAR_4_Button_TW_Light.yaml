@@ -126,7 +126,7 @@ action:
                   target:
                     entity_id: !input light
                   data:
-                    brightness_step_pct: "{{ var_change }}"
+                    brightness_step_pct: "{{ var_change|int }}"
                     transition: "{{ (var_speed / 1000)|float }}"
                 - delay:
                     milliseconds: !input speed
