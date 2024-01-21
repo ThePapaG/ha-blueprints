@@ -126,7 +126,7 @@ action:
                   target:
                     entity_id: !input light
                   data:
-                    brightness_step_pct: {{ var_change }}
+                    brightness_step_pct: "{{ var_change }}"
                     transition: "{{ (var_speed / 1000)|float }}"
                 - delay:
                     milliseconds: !input speed
@@ -154,7 +154,7 @@ action:
                   target:
                     entity_id: !input light
                   data:
-                    brightness_step_pct: {{ (var_change * -1)|int }}
+                    brightness_step_pct: "{{ (var_change * -1)|int }}"
                     transition: "{{ (var_speed / 1000)|float }}"
                 - delay:
                     milliseconds: !input speed
@@ -174,15 +174,15 @@ action:
                 {% set temp = state_attr(var_light, "color_temp") %}
                 {% if temp <= 153 %}
                   185
-                {% if temp <= 185 %}
+                {% elif temp <= 185 %}
                   218
-                {% if temp <= 218 %}
+                {% elif temp <= 218 %}
                   250
-                {% if temp <= 250 %}
+                {% elif temp <= 250 %}
                   290
-                {% if temp <= 290 %}
+                {% elif temp <= 290 %}
                   330
-                {% if temp <= 330 %}
+                {% elif temp <= 330 %}
                   370
                 {% endif %}
               transition: "{{ (var_speed / 1000)|float }}"
@@ -227,15 +227,15 @@ action:
                 {% set temp = state_attr(var_light, "color_temp") %}
                 {% if temp >= 370 %}
                   330
-                {% if temp >= 330 %}
+                {% elif temp >= 330 %}
                   290
-                {% if temp >= 290 %}
+                {% elif temp >= 290 %}
                   250
-                {% if temp >= 250 %}
+                {% elif temp >= 250 %}
                   218
-                {% if temp >= 218 %}
+                {% elif temp >= 218 %}
                   185
-                {% if temp >= 185 %}
+                {% elif temp >= 185 %}
                   153
                 {% endif %}
               transition: "{{ (var_speed / 1000)|float }}"
