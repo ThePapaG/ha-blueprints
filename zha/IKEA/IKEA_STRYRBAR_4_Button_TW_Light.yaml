@@ -267,12 +267,4 @@ action:
 
     # Any other event will cancel the repeat loops.
     default: []
-
-    370
-    330
-    290
-    250
-    218
-    185
-    153
-{}
+    
