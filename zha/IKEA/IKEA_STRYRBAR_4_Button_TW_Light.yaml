@@ -87,9 +87,6 @@ action:
       - conditions:
           - condition: template
             value_template: '{{ trigger.event.data.command == "on" }}'
-          - condition: state
-            entity_id: !input light
-            state: "off"
         sequence:
           - choose:
               - conditions:
