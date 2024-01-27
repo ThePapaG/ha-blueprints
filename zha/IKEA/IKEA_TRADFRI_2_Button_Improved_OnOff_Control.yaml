@@ -10,7 +10,7 @@
 # | off (long)  | Decrease brightness                                     |
 
 blueprint:
-  source_url: https://github.com/ThePapaG/ha-blueprints/blob/main/IKEA/IKEA_TRADFRI_2_button.yaml
+  source_url: https://github.com/ThePapaG/ha-blueprints/blob/main/zha/IKEA/IKEA_TRADFRI_2_button.yaml
 
   name: ZHA - IKEA TRADFRI - 2 Button Remote - OnOff and Brightness Improved
 
