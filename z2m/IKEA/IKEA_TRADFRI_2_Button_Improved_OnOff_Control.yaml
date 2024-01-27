@@ -12,7 +12,7 @@
 blueprint:
   source_url: https://github.com/ThePapaG/ha-blueprints/blob/main/IKEA/IKEA_TRADFRI_2_button.yaml
 
-  name: ZHA - IKEA TRADFRI - 2 Button Remote - OnOff and Brightness Improved
+  name: Z2M - IKEA TRADFRI - 2 Button Remote - OnOff and Brightness Improved
 
   description: >-
     This automation simulates the use of the IKEA TRADFRI on/off switch

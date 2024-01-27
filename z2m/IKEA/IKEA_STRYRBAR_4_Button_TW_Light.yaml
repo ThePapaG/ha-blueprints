@@ -5,7 +5,7 @@
 blueprint:
   source_url: https://github.com/ThePapaG/ha-blueprints/blob/main/zha/IKEA/IKEA_STRYRBAR_4_Button_TW_Light.yaml
 
-  name: ZHA - IKEA TRADFRI - STYRBAR - Warm White Lights Improved
+  name: Z2M - IKEA TRADFRI - STYRBAR - Warm White Lights Improved
 
   description: >-
     This automation simulates the use of the IKEA TRADFRI STYRBAR remote control
