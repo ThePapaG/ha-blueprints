@@ -74,17 +74,15 @@ variables:
   var_colour_step: !input colour_step
 
 trigger:
-  - platform: event
-    event_type: zha_event
-    event_data:
-      device_id: !input remote
+  - platform: state
+    entity_id: !input "remote"
+    attribute: action
 
 action:
   - choose:
       # Short-Press on the dim-up button.
       - conditions:
-          - condition: template
-            value_template: '{{ trigger.event.data.command == "on" }}'
+          - condition: "{{ command == 'on' }}"
         sequence:
           - choose:
               - conditions:
@@ -111,8 +109,7 @@ action:
 
       # Long-Press on the dim-up button.
       - conditions:
-          - condition: template
-            value_template: '{{ trigger.event.data.command == "move_with_on_off" }}'
+          - condition: "{{ command == 'brightness_move_up' }}"
         sequence:
           - repeat:
               while: []
@@ -128,8 +125,7 @@ action:
 
       # Short-Press on the dim-down button.
       - conditions:
-          - condition: template
-            value_template: '{{ trigger.event.data.command == "off" }}'
+          - condition: "{{ command == 'off' }}"
         sequence:
           - service: light.turn_off
             target:
@@ -139,8 +135,7 @@ action:
 
       # Long-Press on the dim-down button.
       - conditions:
-          - condition: template
-            value_template: '{{ trigger.event.data.command == "move" }}'
+          - condition: "{{ command == 'brightness_move_down' }}"
         sequence:
           - repeat:
               while: []
@@ -156,10 +151,7 @@ action:
 
       # Short-Press on the left button.
       - conditions:
-          - condition: template
-            value_template: '{{ trigger.event.data.command == "press" }}'
-          - condition: template
-            value_template: "{{ trigger.event.data.args == [257,13,0] }}"
+          - condition: "{{ command == 'left_arrow_click' }}"
         sequence:
           - service: light.turn_on
             target:
@@ -184,10 +176,7 @@ action:
 
       # Long-Press on the left button.
       - conditions:
-          - condition: template
-            value_template: '{{ trigger.event.data.command == "hold" }}'
-          - condition: template
-            value_template: "{{ trigger.event.data.args == [3329,0] }}"
+          - condition: "{{ command == 'arrow_left_hold' }}"
         sequence:
           - repeat:
               while: []
@@ -209,10 +198,7 @@ action:
 
       # Short-Press on the right button.
       - conditions:
-          - condition: template
-            value_template: '{{ trigger.event.data.command == "press" }}'
-          - condition: template
-            value_template: "{{ trigger.event.data.args == [256,13,0] }}"
+          - condition: "{{ command == 'arrow_right_click' }}"
         sequence:
           - service: light.turn_on
             target:
@@ -237,10 +223,7 @@ action:
 
       # Long-Press on the right button.
       - conditions:
-          - condition: template
-            value_template: '{{ trigger.event.data.command == "hold" }}'
-          - condition: template
-            value_template: "{{ trigger.event.data.args == [3328,0] }}"
+          - condition: "{{ command == 'arrow_right_hold' }}"
         sequence:
           - repeat:
               while: []

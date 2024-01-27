@@ -66,17 +66,15 @@ variables:
   var_change: !input change
 
 trigger:
-  - platform: event
-    event_type: zha_event
-    event_data:
-      device_id: !input remote
+  - platform: state
+    entity_id: !input "remote"
+    attribute: action
 
 action:
   - choose:
-      # Short-Press the on button
+      # Short-Press on the dim-up button.
       - conditions:
-          - condition: template
-            value_template: '{{ trigger.event.data.command == "on" }}'
+          - condition: "{{ command == 'on' }}"
         sequence:
           - choose:
               - conditions:
@@ -100,10 +98,10 @@ action:
                       transition: "{{ (var_speed / 1000)|float }}"
                     target:
                       entity_id: !input light
-      # Long-Press the on button
+
+      # Long-Press on the dim-up button.
       - conditions:
-          - condition: template
-            value_template: '{{ trigger.event.data.command == "move_with_on_off" }}'
+          - condition: "{{ command == 'brightness_move_up' }}"
         sequence:
           - repeat:
               while: []
@@ -112,15 +110,14 @@ action:
                   target:
                     entity_id: !input light
                   data:
-                    brightness_step_pct: "{{ var_change }}"
+                    brightness_step_pct: !input change
                     transition: "{{ (var_speed / 1000)|float }}"
                 - delay:
                     milliseconds: !input speed
 
-      # Short-Press the off button
+      # Short-Press on the dim-down button.
       - conditions:
-          - condition: template
-            value_template: '{{ trigger.event.data.command == "off" }}'
+          - condition: "{{ command == 'off' }}"
         sequence:
           - service: light.turn_off
             target:
@@ -128,10 +125,9 @@ action:
             data:
               transition: "{{ (var_speed / 1000)|float }}"
 
-      # Long-Press the off button
+      # Long-Press on the dim-down button.
       - conditions:
-          - condition: template
-            value_template: '{{ trigger.event.data.command == "move" }}'
+          - condition: "{{ command == 'brightness_move_down' }}"
         sequence:
           - repeat:
               while: []
