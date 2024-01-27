@@ -79,6 +79,8 @@ trigger:
     attribute: action
 
 action:
+  - variables:
+      command: "{{ trigger.to_state.state }}"
   - choose:
       # Short-Press on the dim-up button.
       - conditions:
