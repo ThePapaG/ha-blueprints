@@ -69,11 +69,12 @@ trigger:
   - platform: state
     entity_id: !input "remote"
 
-condition: not
-conditions:
-  - condition: state
-    entity_id: !input remote
-    state: ""
+condition:
+  - condition: not
+    conditions:
+      - condition: state
+        entity_id: sensor.living_room_light_switch_action
+        state: ""
 
 action:
   - variables:
