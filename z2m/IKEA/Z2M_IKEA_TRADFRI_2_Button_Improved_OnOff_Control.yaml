@@ -61,24 +61,21 @@ blueprint:
 mode: restart
 max_exceeded: silent
 
-variables:
-  var_speed: !input speed
-  var_change: !input change
-
 trigger:
   - platform: state
     entity_id: !input "remote"
+    attribute: action
+
+variables:
+  var_speed: !input speed
+  var_change: !input change
+  command: '{{ trigger.to_state.state }}'
 
 condition:
-  - condition: not
-    conditions:
-      - condition: state
-        entity_id: sensor.living_room_light_switch_action
-        state: ""
+  - condition: template
+    value_template: "{{ command != ''}}"
 
 action:
-  - variables:
-      command: "{{ trigger.to_state.state }}"
   - choose:
       # Short-Press on the dim-up button.
       - conditions:
