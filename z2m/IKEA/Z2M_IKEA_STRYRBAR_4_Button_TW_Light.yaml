@@ -140,7 +140,8 @@ action:
 
       # Long-Press on the dim-down button.
       - conditions:
-          - condition: "{{ command == 'brightness_move_down' }}"
+          - condition: template
+            value_template: "{{ command == 'brightness_move_down' }}"
         sequence:
           - repeat:
               while: []
