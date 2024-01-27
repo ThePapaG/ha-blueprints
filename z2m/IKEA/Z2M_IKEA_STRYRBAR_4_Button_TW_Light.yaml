@@ -84,7 +84,8 @@ action:
   - choose:
       # Short-Press on the dim-up button.
       - conditions:
-          - condition: "{{ command == 'on' }}"
+          - condition: template
+            - value_template: "{{ command == 'on' }}"
         sequence:
           - choose:
               - conditions:
@@ -111,7 +112,8 @@ action:
 
       # Long-Press on the dim-up button.
       - conditions:
-          - condition: "{{ command == 'brightness_move_up' }}"
+          - condition: template
+            - value_template: "{{ command == 'brightness_move_up' }}"
         sequence:
           - repeat:
               while: []
@@ -127,7 +129,8 @@ action:
 
       # Short-Press on the dim-down button.
       - conditions:
-          - condition: "{{ command == 'off' }}"
+          - condition: template
+            - value_template: "{{ command == 'off' }}"
         sequence:
           - service: light.turn_off
             target:
@@ -153,7 +156,8 @@ action:
 
       # Short-Press on the left button.
       - conditions:
-          - condition: "{{ command == 'left_arrow_click' }}"
+          - condition: template
+            - value_template: "{{ command == 'left_arrow_click' }}"
         sequence:
           - service: light.turn_on
             target:
@@ -178,7 +182,8 @@ action:
 
       # Long-Press on the left button.
       - conditions:
-          - condition: "{{ command == 'arrow_left_hold' }}"
+          - condition: template
+            - value_template: "{{ command == 'arrow_left_hold' }}"
         sequence:
           - repeat:
               while: []
@@ -200,7 +205,8 @@ action:
 
       # Short-Press on the right button.
       - conditions:
-          - condition: "{{ command == 'arrow_right_click' }}"
+          - condition: template
+            - value_template: "{{ command == 'arrow_right_click' }}"
         sequence:
           - service: light.turn_on
             target:
@@ -225,7 +231,8 @@ action:
 
       # Long-Press on the right button.
       - conditions:
-          - condition: "{{ command == 'arrow_right_hold' }}"
+          - condition: template
+            - value_template: "{{ command == 'arrow_right_hold' }}"
         sequence:
           - repeat:
               while: []

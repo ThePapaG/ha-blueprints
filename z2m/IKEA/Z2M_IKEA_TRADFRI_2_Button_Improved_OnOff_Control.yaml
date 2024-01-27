@@ -76,7 +76,8 @@ action:
   - choose:
       # Short-Press on the dim-up button.
       - conditions:
-          - condition: "{{ command == 'on' }}"
+          - condition: template
+            - value_template: "{{ command == 'on' }}"
         sequence:
           - choose:
               - conditions:
@@ -103,7 +104,8 @@ action:
 
       # Long-Press on the dim-up button.
       - conditions:
-          - condition: "{{ command == 'brightness_move_up' }}"
+          - condition: template
+            - value_template: "{{ command == 'brightness_move_up' }}"
         sequence:
           - repeat:
               while: []
@@ -119,7 +121,8 @@ action:
 
       # Short-Press on the dim-down button.
       - conditions:
-          - condition: "{{ command == 'off' }}"
+          - condition: template
+            - value_template: "{{ command == 'off' }}"
         sequence:
           - service: light.turn_off
             target:
@@ -129,7 +132,8 @@ action:
 
       # Long-Press on the dim-down button.
       - conditions:
-          - condition: "{{ command == 'brightness_move_down' }}"
+          - condition: template
+            - value_template: "{{ command == 'brightness_move_down' }}"
         sequence:
           - repeat:
               while: []
