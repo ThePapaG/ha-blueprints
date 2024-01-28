@@ -186,7 +186,7 @@ action:
               entity_id: !input light
             data:
               color_temp: >-
-                {% set temp = state_attr(var_light, "color_temp") %}
+                {% set temp = (state_attr(var_light, "color_temp") | int) %}
                 {% if temp <= 153 %}
                   185
                 {% elif temp <= 185 %}
@@ -217,7 +217,7 @@ action:
                     entity_id: !input light
                   data:
                     color_temp: >-
-                      {% set new_temp = state_attr(var_light, "color_temp") + ((var_colour_step)|int) %}
+                      {% set new_temp = (state_attr(var_light, "color_temp") | int) + ((var_colour_step)|int) %}
                       {% if new_temp > 500 %}
                         {{ 500 }}
                       {% else %}
@@ -237,7 +237,7 @@ action:
               entity_id: !input light
             data:
               color_temp: >-
-                {% set temp = state_attr(var_light, "color_temp") %}
+                {% set temp = (state_attr(var_light, "color_temp") | int) %}
                 {% if temp >= 370 %}
                   330
                 {% elif temp >= 330 %}
@@ -268,7 +268,7 @@ action:
                     entity_id: !input light
                   data:
                     color_temp: >-
-                      {% set new_temp = state_attr(var_light, "color_temp") - ((var_colour_step)|int) %}
+                      {% set new_temp = (state_attr(var_light, "color_temp") | int) - ((var_colour_step)|int) %}
                       {% if new_temp < 153 %}
                         {{ 153 }}
                       {% else %}
