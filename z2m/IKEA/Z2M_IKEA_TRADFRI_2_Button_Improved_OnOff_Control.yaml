@@ -69,6 +69,7 @@ trigger:
 variables:
   var_speed: !input speed
   var_change: !input change
+  var_light: !input light
   command: '{{ trigger.to_state.state }}'
 
 condition:
@@ -77,12 +78,13 @@ condition:
 
 action:
   - choose:
-      # Short-Press on the dim-up button.
+      # Short press up
       - conditions:
           - condition: template
             value_template: "{{ command == 'on' }}"
         sequence:
           - choose:
+              # If the light is off turn on to the last level
               - conditions:
                   - condition: state
                     entity_id: !input light
@@ -93,6 +95,7 @@ action:
                       entity_id: !input light
                     data:
                       transition: "{{ (var_speed / 1000)|float }}"
+              # If the light is on then turn on to max
               - conditions:
                   - condition: state
                     entity_id: !input light
@@ -104,25 +107,39 @@ action:
                       transition: "{{ (var_speed / 1000)|float }}"
                     target:
                       entity_id: !input light
-
-      # Long-Press on the dim-up button.
+      # Long press up
       - conditions:
           - condition: template
             value_template: "{{ command == 'brightness_move_up' }}"
         sequence:
           - repeat:
-              while: []
+              while:
+                - condition: template
+                  value_template: "{{ (repeat.index < 500) }}"
               sequence:
-                - service: light.turn_on
-                  target:
-                    entity_id: !input light
-                  data:
-                    brightness_step_pct: !input change
-                    transition: "{{ (var_speed / 1000)|float }}"
+                - choose:
+                    # Light is off so turn it on to 1
+                    - conditions:
+                        - condition: template
+                          value_template: "{{ is_state(var_light, 'off') }}"
+                      sequence:
+                        - service: light.turn_on
+                          target:
+                            entity_id: !input light
+                          data:
+                            brightness: 1
+                            transition: "{{ (var_speed / 1000)|float }}"
+                  # Anything else just dim up
+                  default:
+                    - service: light.turn_on
+                      target:
+                        entity_id: !input light
+                      data:
+                        brightness_step_pct: "{{ var_change }}"
+                        transition: "{{ (var_speed / 1000)|float }}"
                 - delay:
-                    milliseconds: !input speed
-
-      # Short-Press on the dim-down button.
+                    milliseconds: var_speed
+      # Short press down
       - conditions:
           - condition: template
             value_template: "{{ command == 'off' }}"
@@ -133,13 +150,15 @@ action:
             data:
               transition: "{{ (var_speed / 1000)|float }}"
 
-      # Long-Press on the dim-down button.
+      # Long press down
       - conditions:
           - condition: template
             value_template: "{{ command == 'brightness_move_down' }}"
         sequence:
           - repeat:
-              while: []
+              while:
+                - condition: template
+                  value_template: "{{ (repeat.index < 500) }}"
               sequence:
                 - service: light.turn_on
                   target:
@@ -148,7 +167,7 @@ action:
                     brightness_step_pct: "{{ (var_change * -1)|int }}"
                     transition: "{{ (var_speed / 1000)|float }}"
                 - delay:
-                    milliseconds: !input speed
+                    milliseconds: var_speed
 
     # Any other event will cancel the repeat loops (i.e. releasing the [on|off] button)
     default: []
