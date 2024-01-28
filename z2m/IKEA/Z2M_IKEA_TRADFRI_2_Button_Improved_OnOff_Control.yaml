@@ -63,8 +63,8 @@ max_exceeded: silent
 
 trigger:
   - platform: state
-    entity_id: !input "remote"
-    attribute: action
+    entity_id: 
+      - !input "remote"
 
 variables:
   var_speed: !input speed
