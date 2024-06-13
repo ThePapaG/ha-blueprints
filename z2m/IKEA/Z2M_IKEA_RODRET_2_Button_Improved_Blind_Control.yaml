@@ -10,9 +10,9 @@
 # | off (long)  | Close blind until release                                     |
 
 blueprint:
-  source_url: https://github.com/ThePapaG/ha-blueprints/blob/main/z2m/IKEA/IKEA_TRADFRI_2_button.yaml
+  source_url: https://github.com/ThePapaG/ha-blueprints/blob/main/z2m/IKEA/Z2M_IKEA_RODRET_2_Button_Improved_Blind_Control.yaml
 
-  name: Z2M - IKEA TRADFRI - 2 Button Remote - OnOff and Brightness Improved
+  name: Z2M - IKEA RODRET - 2 Button Remote - Blind Control with no percentage
 
   description: >-
     This automation simulates the use of the IKEA RODRET to control a blind without position
