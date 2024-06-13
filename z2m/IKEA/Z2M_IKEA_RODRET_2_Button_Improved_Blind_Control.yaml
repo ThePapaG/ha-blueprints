@@ -43,7 +43,6 @@ blueprint:
           min: 1
           max: 5
           step: 1
-          unit_of_measurement: milliseconds
           mode: slider
       default: 1
 
@@ -65,49 +64,47 @@ condition:
 
 action:
   - choose:
-      # Short press up or long press up
+      # Short up or long up
       - conditions:
-        - or:
-          - condition: template
-            value_template: "{{ command == 'on' }}"
-          - condition: template
-            value_template: "{{ command == 'brightness_move_up' }}"
+          - or:
+              - condition: template
+                value_template: "{{ command == 'on' }}"
+              - condition: template
+                value_template: "{{ command == 'brightness_move_up' }}"
+        # Open the blind
         sequence:
           - repeat:
-            count: !input repeats
-            sequence:
-              # Open the cover
-              - service: cover.open_cover
-                metadata: {}
-                data: {}
-                target:
-                  entity_id: !input cover
-      # Short press down or long press down
+              count: 2
+              sequence:
+                - service: cover.open_cover
+                  metadata: {}
+                  data: {}
+                  target:
+                    entity_id: cover.front_blind
+      # Short down or long down
       - conditions:
-        - or:
-          - condition: template
-            value_template: "{{ command == 'off' }}"
-          - condition: template
-            value_template: "{{ command == 'brightness_move_down' }}"
+          - or:
+              - condition: template
+                value_template: "{{ command == 'off' }}"
+              - condition: template
+                value_template: "{{ command == 'brightness_move_down' }}"
+        # Close the blind
         sequence:
           - repeat:
-            count: !input repeats
-            sequence:
-              # Close the cover
-              - service: cover.close_cover
-                metadata: {}
-                data: {}
-                target:
-                  entity_id: !input cover
-
-    # Any other event will send a stop
+              count: 2
+              sequence:
+                - service: cover.close_cover
+                  metadata: {}
+                  data: {}
+                  target:
+                    entity_id: cover.front_blind
+    # Any other action (including release) should stop the blind in its tracks 
     default:
       - repeat:
-            count: !input repeats
-            sequence:
-              # Open the cover
-              - service: cover.stop_cover
-                metadata: {}
-                data: {}
-                target:
-                  entity_id: !input cover
+          count: 2
+          sequence:
+            - service: cover.stop_cover
+              metadata: {}
+              data: {}
+              target:
+                entity_id: cover.front_blind
