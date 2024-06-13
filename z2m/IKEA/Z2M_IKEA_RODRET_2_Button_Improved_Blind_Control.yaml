@@ -1,0 +1,113 @@
+---
+# This automation simulates the use of the IKEA RODRET Blind control
+# connected through Z2M.
+
+# | Button      | Action                                                  |
+# | ----------- | ------------------------------------------------------- |
+# | on (short)  | open the blind  |
+# | off (short) | close the blind                                      |
+# | on (long)   | Open the blind until release                                     |
+# | off (long)  | Close blind until release                                     |
+
+blueprint:
+  source_url: https://github.com/ThePapaG/ha-blueprints/blob/main/z2m/IKEA/IKEA_TRADFRI_2_button.yaml
+
+  name: Z2M - IKEA TRADFRI - 2 Button Remote - OnOff and Brightness Improved
+
+  description: >-
+    This automation simulates the use of the IKEA RODRET to control a blind without position
+    connected through Z2M.
+
+  domain: automation
+
+  input:
+    remote:
+      name: IKEA RODRET remote control
+      description: Select the remote control you wish to use.
+      selector:
+        entity:
+          integration: mqtt
+          domain: sensor
+    cover:
+      name: Cover
+      description: Select the cover entity you wish to control.
+      selector:
+        entity:
+          filter:
+            - domain: cover
+    repeats:
+      name: Repeats
+      description: How many times to repeat a command (accounts for poor connection).
+      selector:
+        number:
+          min: 1
+          max: 5
+          step: 1
+          unit_of_measurement: milliseconds
+          mode: slider
+      default: 1
+
+mode: single
+
+trigger:
+  - platform: state
+    entity_id: 
+      - !input "remote"
+
+variables:
+  var_repeats: !input repeats
+  var_cover: !input cover
+  command: '{{ trigger.to_state.state }}'
+
+condition:
+  - condition: template
+    value_template: "{{ command != ''}}"
+
+action:
+  - choose:
+      # Short press up or long press up
+      - conditions:
+        - or:
+          - condition: template
+            value_template: "{{ command == 'on' }}"
+          - condition: template
+            value_template: "{{ command == 'brightness_move_up' }}"
+        sequence:
+          - repeat:
+            count: !input repeats
+            sequence:
+              # Open the cover
+              - service: cover.open_cover
+                metadata: {}
+                data: {}
+                target:
+                  entity_id: !input cover
+      # Short press down or long press down
+      - conditions:
+        - or:
+          - condition: template
+            value_template: "{{ command == 'off' }}"
+          - condition: template
+            value_template: "{{ command == 'brightness_move_down' }}"
+        sequence:
+          - repeat:
+            count: !input repeats
+            sequence:
+              # Close the cover
+              - service: cover.close_cover
+                metadata: {}
+                data: {}
+                target:
+                  entity_id: !input cover
+
+    # Any other event will send a stop
+    default:
+      - repeat:
+            count: !input repeats
+            sequence:
+              # Open the cover
+              - service: cover.stop_cover
+                metadata: {}
+                data: {}
+                target:
+                  entity_id: !input cover
